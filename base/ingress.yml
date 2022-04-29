@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-name
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: development
+  #  alb.ingress.kubernetes.io/target-type: ip (if Service Type Cluster IP)
+    external-dns.alpha.kubernetes.io/hostname: '123.example.com'
+  labels:
+    app: app
+spec:
+  rules:
+    - host: '123.example.com'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: example-app
+                port:
+                  number: 80
